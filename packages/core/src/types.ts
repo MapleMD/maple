@@ -1,7 +1,4 @@
-// Domain types - pure shapes, no behavior.
-//
-// Intentionally minimal in M0. Full ports (ContentSource, Renderer, Plugin,
-// Theme, Logger) land in M1 alongside the first working pipeline.
+// Domain types. Pure shapes, no behavior.
 
 export interface Frontmatter {
   title: string;
