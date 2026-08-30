@@ -1,0 +1,75 @@
+---
+// TagsIndexLayout - /tags - flat list of all tags with post counts.
+import BaseLayout from "./BaseLayout.astro";
+
+interface TagEntry {
+  tag: string;
+  slug: string;
+  count: number;
+}
+
+interface Props {
+  tags: readonly TagEntry[];
+  siteTitle?: string;
+  siteUrl?: string;
+  language?: string;
+}
+
+const { tags, siteTitle, siteUrl, language = "en" } = Astro.props;
+const sorted = [...tags].sort((a, b) => b.count - a.count || a.tag.localeCompare(b.tag));
+---
+
+<BaseLayout
+  title="Tags"
+  siteTitle={siteTitle}
+  siteUrl={siteUrl}
+  language={language}
+>
+  <slot name="head" slot="head" />
+  <slot name="header-extra" slot="header-extra" />
+  <h1>Tags</h1>
+  {
+    sorted.length === 0 ? (
+      <p>No tags yet.</p>
+    ) : (
+      <ul class="maplemd-tag-cloud">
+        {sorted.map((t) => (
+          <li>
+            <a href={`/tags/${t.slug}/`}>
+              #{t.tag}
+              <span class="count">{t.count}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .maplemd-tag-cloud {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .maplemd-tag-cloud a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.4rem 0.75rem;
+    background: var(--maplemd-color-code-bg);
+    border-radius: var(--maplemd-radius);
+    color: var(--maplemd-color-text);
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+  .maplemd-tag-cloud a:hover {
+    color: var(--maplemd-color-accent);
+  }
+  .maplemd-tag-cloud .count {
+    color: var(--maplemd-color-text-muted);
+    font-size: 0.8rem;
+  }
+</style>

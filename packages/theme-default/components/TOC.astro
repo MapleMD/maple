@@ -1,0 +1,72 @@
+---
+// Table of Contents - renders a nested list from Astro's `headings`
+// output (produced by `entry.render()` on any MD/MDX file).
+//
+// Consumers pass `headings` verbatim; we skip H1 (post title lives in
+// PostLayout) and cap depth at 3 so long docs don't produce noisy TOCs.
+
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  headings: readonly Heading[];
+  minDepth?: number;
+  maxDepth?: number;
+  title?: string;
+}
+
+const { headings, minDepth = 2, maxDepth = 3, title = "On this page" } = Astro.props;
+const filtered = headings.filter((h) => h.depth >= minDepth && h.depth <= maxDepth);
+---
+
+{
+  filtered.length > 0 && (
+    <nav class="maplemd-toc" aria-label={title}>
+      <p class="maplemd-toc-title">{title}</p>
+      <ul>
+        {filtered.map((h) => (
+          <li class={`maple-toc-item depth-${h.depth}`}>
+            <a href={`#${h.slug}`}>{h.text}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}
+
+<style>
+  .maplemd-toc {
+    border-left: 2px solid var(--maplemd-color-border);
+    padding: 0.5rem 0 0.5rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+  .maplemd-toc-title {
+    font-weight: 600;
+    margin: 0 0 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.75rem;
+    color: var(--maplemd-color-text-muted);
+  }
+  .maplemd-toc ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .maplemd-toc-item a {
+    color: var(--maplemd-color-text-muted);
+    text-decoration: none;
+    line-height: 1.6;
+  }
+  .maplemd-toc-item a:hover {
+    color: var(--maplemd-color-accent);
+  }
+  .depth-3 {
+    padding-left: 1rem;
+    font-size: 0.85rem;
+  }
+</style>

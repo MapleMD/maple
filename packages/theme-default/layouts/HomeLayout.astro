@@ -1,0 +1,95 @@
+---
+// MapleMD default theme - HomeLayout.
+// Renders a list of posts, optionally paginated. Pass either `posts`
+// (sorted client-side, no pagination) or `page` (a `Page<PostSummary>`
+// from @maplemd/content's paginate()).
+import BaseLayout from "./BaseLayout.astro";
+import type { Page } from "@maplemd/content";
+
+interface PostSummary {
+  slug: string;
+  title: string;
+  description?: string;
+  date: Date;
+}
+
+interface Props {
+  title?: string;
+  description?: string;
+  posts?: PostSummary[];
+  page?: Page<PostSummary>;
+  siteTitle?: string;
+  siteUrl?: string;
+  language?: string;
+}
+
+const {
+  title = "Latest posts",
+  description,
+  posts,
+  page,
+  siteTitle,
+  siteUrl,
+  language = "en",
+} = Astro.props;
+
+const items = page
+  ? page.items
+  : [...(posts ?? [])].sort((a, b) => b.date.getTime() - a.date.getTime());
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  siteTitle={siteTitle}
+  siteUrl={siteUrl}
+  language={language}
+>
+  <slot name="head" slot="head" />
+  <slot name="header-extra" slot="header-extra" />
+  <h1>{title}</h1>
+  {description && <p>{description}</p>}
+  {
+    items.length === 0 ? (
+      <p>No posts yet.</p>
+    ) : (
+      <ul class="maplemd-post-list">
+        {items.map((post) => (
+          <li>
+            <a href={`/${post.slug}/`}>{post.title}</a>
+            <time datetime={post.date.toISOString()}>
+              {post.date.toLocaleDateString(language, {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </time>
+            {post.description && <p>{post.description}</p>}
+          </li>
+        ))}
+      </ul>
+    )
+  }
+  {
+    page && (page.hasPrev || page.hasNext) && (
+      <nav class="maplemd-pagination" aria-label="Pagination">
+        {page.hasPrev && <a href={page.prevUrl!} rel="prev">← Previous</a>}
+        {page.hasNext && <a href={page.nextUrl!} rel="next">Next →</a>}
+      </nav>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .maplemd-pagination {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--maplemd-color-border);
+  }
+  .maplemd-pagination a {
+    color: var(--maplemd-color-accent);
+    text-decoration: none;
+  }
+</style>

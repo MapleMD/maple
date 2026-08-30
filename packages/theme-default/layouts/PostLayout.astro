@@ -1,0 +1,63 @@
+---
+// MapleMD default theme - PostLayout.
+// Wraps a single blog post: title, meta (date/reading-time/tags), TOC
+// (when headings are provided), and body slot.
+import BaseLayout from "./BaseLayout.astro";
+import PostMeta from "../components/PostMeta.astro";
+import TOC from "../components/TOC.astro";
+
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  title: string;
+  description?: string;
+  date: Date;
+  siteTitle?: string;
+  siteUrl?: string;
+  language?: string;
+  author?: string;
+  tags?: readonly string[];
+  readingMinutes?: number;
+  headings?: readonly Heading[];
+}
+
+const {
+  title,
+  description,
+  date,
+  siteTitle,
+  siteUrl,
+  language,
+  author,
+  tags,
+  readingMinutes,
+  headings,
+} = Astro.props;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  siteTitle={siteTitle}
+  siteUrl={siteUrl}
+  language={language}
+>
+  <slot name="head" slot="head" />
+  <slot name="header-extra" slot="header-extra" />
+  <article>
+    <h1>{title}</h1>
+    <PostMeta
+      date={date}
+      language={language}
+      author={author}
+      tags={tags}
+      readingMinutes={readingMinutes}
+    />
+    {headings && headings.length > 0 && <TOC headings={headings} />}
+    <slot />
+  </article>
+</BaseLayout>

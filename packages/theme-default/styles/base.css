@@ -1,0 +1,197 @@
+/* Maple default theme - base styles.
+ *
+ * Design: readable typography first, restrained palette, dark mode via
+ * prefers-color-scheme + optional [data-theme] override. No CSS
+ * framework. Consumers can override any custom property.
+ */
+
+:root {
+  --maplemd-font-body: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+  --maplemd-font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+
+  --maplemd-color-bg: #ffffff;
+  --maplemd-color-text: #1a1a1a;
+  --maplemd-color-text-muted: #555;
+  --maplemd-color-accent: #2563eb;
+  --maplemd-color-border: #e5e7eb;
+  --maplemd-color-code-bg: #f3f4f6;
+
+  --maplemd-content-width: 44rem;
+  --maplemd-radius: 6px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --maplemd-color-bg: #0b0d10;
+    --maplemd-color-text: #e5e7eb;
+    --maplemd-color-text-muted: #9ca3af;
+    --maplemd-color-accent: #60a5fa;
+    --maplemd-color-border: #262b31;
+    --maplemd-color-code-bg: #14181d;
+  }
+}
+
+[data-theme="light"] {
+  --maplemd-color-bg: #ffffff;
+  --maplemd-color-text: #1a1a1a;
+  --maplemd-color-text-muted: #555;
+  --maplemd-color-accent: #2563eb;
+  --maplemd-color-border: #e5e7eb;
+  --maplemd-color-code-bg: #f3f4f6;
+}
+
+[data-theme="dark"] {
+  --maplemd-color-bg: #0b0d10;
+  --maplemd-color-text: #e5e7eb;
+  --maplemd-color-text-muted: #9ca3af;
+  --maplemd-color-accent: #60a5fa;
+  --maplemd-color-border: #262b31;
+  --maplemd-color-code-bg: #14181d;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--maplemd-font-body);
+  color-scheme: light dark;
+}
+
+body {
+  margin: 0;
+  background: var(--maplemd-color-bg);
+  color: var(--maplemd-color-text);
+  font-size: 1rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+.maplemd-container {
+  max-width: var(--maplemd-content-width);
+  margin: 0 auto;
+  padding: 2rem 1.25rem;
+}
+
+.maplemd-header {
+  border-bottom: 1px solid var(--maplemd-color-border);
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+}
+
+.maplemd-header a {
+  color: var(--maplemd-color-text);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.maplemd-footer {
+  border-top: 1px solid var(--maplemd-color-border);
+  margin-top: 3rem;
+  padding-top: 1rem;
+  font-size: 0.875rem;
+  color: var(--maplemd-color-text-muted);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  line-height: 1.25;
+  font-weight: 700;
+  margin: 1.5em 0 0.5em;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-top: 0;
+}
+h2 {
+  font-size: 1.5rem;
+}
+h3 {
+  font-size: 1.25rem;
+}
+
+p {
+  margin: 0 0 1rem;
+}
+
+a {
+  color: var(--maplemd-color-accent);
+}
+
+pre,
+code {
+  font-family: var(--maplemd-font-mono);
+  font-size: 0.9em;
+}
+
+code {
+  background: var(--maplemd-color-code-bg);
+  padding: 0.15em 0.35em;
+  border-radius: var(--maplemd-radius);
+}
+
+pre {
+  background: var(--maplemd-color-code-bg);
+  padding: 1rem;
+  border-radius: var(--maplemd-radius);
+  overflow-x: auto;
+}
+
+pre code {
+  background: transparent;
+  padding: 0;
+}
+
+blockquote {
+  margin: 1rem 0;
+  padding: 0.25rem 1rem;
+  border-left: 3px solid var(--maplemd-color-accent);
+  color: var(--maplemd-color-text-muted);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--maplemd-color-border);
+  margin: 2rem 0;
+}
+
+.maplemd-post-meta {
+  font-size: 0.875rem;
+  color: var(--maplemd-color-text-muted);
+  margin-bottom: 2rem;
+}
+
+.maplemd-post-list {
+  list-style: none;
+  padding: 0;
+}
+
+.maplemd-post-list li {
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--maplemd-color-border);
+}
+
+.maplemd-post-list li:last-child {
+  border-bottom: none;
+}
+
+.maplemd-post-list a {
+  color: var(--maplemd-color-text);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.maplemd-post-list time {
+  display: block;
+  font-size: 0.875rem;
+  color: var(--maplemd-color-text-muted);
+  margin-top: 0.25rem;
+}

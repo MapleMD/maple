@@ -1,0 +1,28 @@
+{
+  "name": "@maplemd/loaders",
+  "version": "0.0.0",
+  "description": "Git-aware metadata helpers for MapleMD content.",
+  "keywords": ["maplemd", "git", "metadata", "markdown"],
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": ["dist", "README.md"],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist .turbo"
+  },
+  "devDependencies": {
+    "@types/node": "^20.16.10",
+    "typescript": "^5.6.2",
+    "vitest": "^2.1.1"
+  }
+}

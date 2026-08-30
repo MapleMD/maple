@@ -1,0 +1,127 @@
+---
+// DocLayout - a doc page with an optional "Last updated" line derived
+// from git. Simpler than PostLayout: no tags, no reading time - docs
+// have their own rhythm.
+import BaseLayout from "./BaseLayout.astro";
+
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  title: string;
+  description?: string;
+  siteTitle?: string;
+  siteUrl?: string;
+  language?: string;
+  lastUpdated?: Date;
+  authors?: readonly string[];
+  headings?: readonly Heading[];
+}
+
+const {
+  title,
+  description,
+  siteTitle,
+  siteUrl,
+  language = "en",
+  lastUpdated,
+  authors = [],
+  headings,
+} = Astro.props;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  siteTitle={siteTitle}
+  siteUrl={siteUrl}
+  language={language}
+>
+  <slot name="head" slot="head" />
+  <slot name="header-extra" slot="header-extra" />
+  <article>
+    <h1>{title}</h1>
+    {description && <p class="maplemd-doc-lede">{description}</p>}
+    {
+      (lastUpdated || authors.length > 0) && (
+        <div class="maplemd-doc-meta">
+          {lastUpdated && (
+            <span>
+              Updated <time datetime={lastUpdated.toISOString()}>
+                {lastUpdated.toLocaleDateString(language, {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </time>
+            </span>
+          )}
+          {authors.length > 0 && <span> · by {authors.join(", ")}</span>}
+        </div>
+      )
+    }
+    {
+      headings && headings.length > 2 && (
+        <nav class="maplemd-doc-toc" aria-label="On this page">
+          <p>On this page</p>
+          <ul>
+            {headings
+              .filter((h) => h.depth === 2 || h.depth === 3)
+              .map((h) => (
+                <li class={`depth-${h.depth}`}>
+                  <a href={`#${h.slug}`}>{h.text}</a>
+                </li>
+              ))}
+          </ul>
+        </nav>
+      )
+    }
+    <slot />
+  </article>
+</BaseLayout>
+
+<style>
+  .maplemd-doc-lede {
+    color: var(--maplemd-color-text-muted);
+    font-size: 1.1rem;
+    margin-top: -0.5rem;
+  }
+  .maplemd-doc-meta {
+    font-size: 0.85rem;
+    color: var(--maplemd-color-text-muted);
+    margin: 0 0 1.5rem;
+  }
+  .maplemd-doc-toc {
+    border-left: 2px solid var(--maplemd-color-border);
+    padding: 0.5rem 0 0.5rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+  .maplemd-doc-toc p {
+    margin: 0 0 0.5rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.75rem;
+    color: var(--maplemd-color-text-muted);
+  }
+  .maplemd-doc-toc ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .maplemd-doc-toc a {
+    color: var(--maplemd-color-text-muted);
+    text-decoration: none;
+  }
+  .maplemd-doc-toc a:hover {
+    color: var(--maplemd-color-accent);
+  }
+  .depth-3 {
+    padding-left: 1rem;
+    font-size: 0.85rem;
+  }
+</style>

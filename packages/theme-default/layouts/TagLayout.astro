@@ -1,0 +1,81 @@
+---
+// TagLayout - posts filtered by a single tag, with pagination.
+import BaseLayout from "./BaseLayout.astro";
+import type { Page } from "@maplemd/content";
+
+interface PostSummary {
+  slug: string;
+  title: string;
+  description?: string;
+  date: Date;
+}
+
+interface Props {
+  tag: string;
+  page: Page<PostSummary>;
+  siteTitle?: string;
+  siteUrl?: string;
+  language?: string;
+}
+
+const { tag, page, siteTitle, siteUrl, language = "en" } = Astro.props;
+const title = `Posts tagged "${tag}"`;
+---
+
+<BaseLayout
+  title={title}
+  siteTitle={siteTitle}
+  siteUrl={siteUrl}
+  language={language}
+>
+  <slot name="head" slot="head" />
+  <slot name="header-extra" slot="header-extra" />
+  <h1>#{tag}</h1>
+  <p>
+    {page.totalItems} post{page.totalItems === 1 ? "" : "s"}
+    {page.totalPages > 1 && <> · page {page.currentPage} of {page.totalPages}</>}
+  </p>
+  {
+    page.items.length === 0 ? (
+      <p>No posts under this tag.</p>
+    ) : (
+      <ul class="maplemd-post-list">
+        {page.items.map((post) => (
+          <li>
+            <a href={`/${post.slug}/`}>{post.title}</a>
+            <time datetime={post.date.toISOString()}>
+              {post.date.toLocaleDateString(language, {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </time>
+            {post.description && <p>{post.description}</p>}
+          </li>
+        ))}
+      </ul>
+    )
+  }
+  {
+    (page.hasPrev || page.hasNext) && (
+      <nav class="maplemd-pagination" aria-label="Pagination">
+        {page.hasPrev && <a href={page.prevUrl!} rel="prev">← Previous</a>}
+        {page.hasNext && <a href={page.nextUrl!} rel="next">Next →</a>}
+      </nav>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .maplemd-pagination {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--maplemd-color-border);
+  }
+  .maplemd-pagination a {
+    color: var(--maplemd-color-accent);
+    text-decoration: none;
+  }
+</style>

@@ -1,0 +1,30 @@
+{
+  "name": "@maplemd/theme-default",
+  "version": "0.0.0",
+  "description": "Default theme for MapleMD - minimalist, readable, dark-mode by default.",
+  "license": "MIT",
+  "type": "module",
+  "files": ["layouts", "components", "styles", "README.md"],
+  "exports": {
+    "./layouts/BaseLayout.astro": "./layouts/BaseLayout.astro",
+    "./layouts/PostLayout.astro": "./layouts/PostLayout.astro",
+    "./layouts/HomeLayout.astro": "./layouts/HomeLayout.astro",
+    "./layouts/TagLayout.astro": "./layouts/TagLayout.astro",
+    "./layouts/TagsIndexLayout.astro": "./layouts/TagsIndexLayout.astro",
+    "./layouts/DocLayout.astro": "./layouts/DocLayout.astro",
+    "./components/TOC.astro": "./components/TOC.astro",
+    "./components/PostMeta.astro": "./components/PostMeta.astro",
+    "./styles/base.css": "./styles/base.css"
+  },
+  "dependencies": {
+    "@maplemd/content": "workspace:*"
+  },
+  "peerDependencies": {
+    "astro": "^5.0.0"
+  },
+  "scripts": {
+    "build": "echo 'no build step (source-shipped)'",
+    "typecheck": "echo 'no typecheck (Astro components typechecked by consumer)'",
+    "clean": "rm -rf .turbo"
+  }
+}

@@ -1,0 +1,72 @@
+---
+// MapleMD default theme - BaseLayout.
+// Renders `<html>`, `<head>`, header, main slot, footer. All other layouts
+// wrap this one.
+//
+// Slots:
+//   default          - main content
+//   head             - extra <head> tags
+//   header-extra     - right side of the header (nav, extras)
+import "@maplemd/theme-default/styles/base.css";
+
+interface Props {
+  title: string;
+  description?: string;
+  siteTitle?: string;
+  siteUrl?: string;
+  language?: string;
+}
+
+const {
+  title,
+  description = "",
+  siteTitle = "MapleMD",
+  language = "en",
+} = Astro.props;
+
+const fullTitle = title === siteTitle ? title : `${title} · ${siteTitle}`;
+---
+
+<!doctype html>
+<html lang={language}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content="MapleMD" />
+    <title>{fullTitle}</title>
+    {description && <meta name="description" content={description} />}
+    <link rel="alternate" type="application/rss+xml" title={siteTitle} href="/rss.xml" />
+    <slot name="head" />
+  </head>
+  <body>
+    <div class="maplemd-container">
+      <header class="maplemd-header">
+        <a href="/">{siteTitle}</a>
+        <span class="maplemd-header-extra">
+          <slot name="header-extra" />
+        </span>
+      </header>
+      <main>
+        <slot />
+      </main>
+      <footer class="maplemd-footer">
+        <p>Built with <a href="https://github.com/">MapleMD</a>.</p>
+      </footer>
+    </div>
+
+    <style>
+      .maplemd-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+      .maplemd-header-extra {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        min-width: 0;
+      }
+    </style>
+  </body>
+</html>

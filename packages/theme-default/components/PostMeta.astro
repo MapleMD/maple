@@ -1,0 +1,55 @@
+---
+// Post metadata line - date, reading time, author, tags. Consolidated
+// here so the same visual style ships across PostLayout, article cards,
+// and any theme override.
+
+interface Props {
+  date: Date;
+  language?: string;
+  author?: string;
+  readingMinutes?: number;
+  tags?: readonly string[];
+}
+
+const { date, language = "en", author, readingMinutes, tags = [] } = Astro.props;
+const formatted = date.toLocaleDateString(language, {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+
+import { slugify } from "@maplemd/content";
+---
+
+<div class="maplemd-post-meta">
+  <time datetime={date.toISOString()}>{formatted}</time>
+  {readingMinutes && <span> · {readingMinutes} min read</span>}
+  {author && <span> · {author}</span>}
+  {
+    tags.length > 0 && (
+      <span class="maplemd-post-tags">
+        {tags.map((t) => (
+          <a href={`/tags/${slugify(t)}/`} class="maplemd-tag">
+            #{t}
+          </a>
+        ))}
+      </span>
+    )
+  }
+</div>
+
+<style>
+  .maplemd-post-tags {
+    display: inline-flex;
+    gap: 0.5rem;
+    margin-left: 0.5rem;
+  }
+  .maplemd-tag {
+    color: var(--maplemd-color-text-muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+  }
+  .maplemd-tag:hover {
+    color: var(--maplemd-color-accent);
+  }
+</style>

@@ -12,8 +12,10 @@ Alpha, WIP. Currently in the repo:
 - `@maplemd/core` - shared domain types
 - `@maplemd/config` - `defineConfig` + zod-validated schema
 - `@maplemd/content` - frontmatter schemas + small helpers (slug, tags, pagination, reading time)
+- `@maplemd/theme-default` - minimalist Astro layouts, dark mode, no CSS framework
+- `@maplemd/loaders` - git-aware metadata via `git log` parsing
 
-More landing over the next few days: theme, git-aware loaders, CLI, plugins, starter templates.
+CLI, plugins, and starter templates arriving over the next few days.
 
 ## Dev
 
