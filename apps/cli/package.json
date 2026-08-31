@@ -1,0 +1,27 @@
+{
+  "name": "maplemd",
+  "version": "0.0.0",
+  "description": "MapleMD command-line interface.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "maple": "./dist/index.js"
+  },
+  "files": ["dist", "README.md"],
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "start": "node ./dist/index.js",
+    "clean": "rm -rf dist .turbo"
+  },
+  "dependencies": {
+    "@maplemd/core": "workspace:*",
+    "commander": "^12.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.16.10",
+    "typescript": "^5.6.2",
+    "vitest": "^2.1.1"
+  }
+}

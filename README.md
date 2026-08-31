@@ -14,8 +14,9 @@ Alpha, WIP. Currently in the repo:
 - `@maplemd/content` - frontmatter schemas + small helpers (slug, tags, pagination, reading time)
 - `@maplemd/theme-default` - minimalist Astro layouts, dark mode, no CSS framework
 - `@maplemd/loaders` - git-aware metadata via `git log` parsing
+- `maplemd` CLI - `maple dev`, `maple build`, `maple preview` (thin over Astro)
 
-CLI, plugins, and starter templates arriving over the next few days.
+Plugins and starter templates (plus `maple init` / `maple deploy`) arriving over the next few days.
 
 ## Dev
 
